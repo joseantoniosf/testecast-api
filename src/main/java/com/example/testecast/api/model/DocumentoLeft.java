@@ -38,24 +38,29 @@ public class DocumentoLeft {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		result = prime * result + ((documento == null) ? 0 : documento.hashCode());
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DocumentoLeft other = (DocumentoLeft) obj;
+	public boolean equals(DocumentoRight obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+		DocumentoRight other = obj;//(DocumentoRight)
 		if (codigo == null) {
-			if (other.codigo != null)
+			if (other.getCodigo() != null)
 				return false;
-		} else if (!codigo.equals(other.codigo))
+		} else if (!codigo.equals(other.getCodigo()))
+			return false;
+		if (documento == null) {
+			if (other.getDocumento() != null)
+				return false;
+		} else if (!documento.equals(other.getDocumento()))
 			return false;
 		return true;
 	}
-
+	
 }

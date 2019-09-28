@@ -91,7 +91,7 @@ public class DocumentoResource {
 	// --------------------------------------------------------------------------
 	@GetMapping("/{codigo}")
 	public String diffEntreLeftERight(@PathVariable Long codigo) {
-		return "Documentos " + codigo.toString() + " idênticos";
+		return documentoService.resultadoDiffLeftRight(codigo);
 	}
 
 }

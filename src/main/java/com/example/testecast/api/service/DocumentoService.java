@@ -32,5 +32,22 @@ public class DocumentoService {
 		
 		return documentoRightRepository.save(documentoRight);
 	}
+	
+	public String resultadoDiffLeftRight(Long codigo) {
+		DocumentoLeft  docLeft  = documentoLeftRepository.findById(codigo).orElse(new DocumentoLeft());
+		DocumentoRight docRight = documentoRightRepository.findById(codigo).orElse(new DocumentoRight());
+		
+		if (docLeft.equals(docRight)) {
+			return "Documentos " + docLeft.getCodigo() + " idênticos";
+		}
+		else {
+			if (docLeft.getDocumento().length() != docRight.getDocumento().length()) {
+				return "Documentos " + docLeft.getCodigo() + " com tamanhos diferentes";
+			}
+			else {
+				return "Falta fazer o Diff dos dois documentos";//TODO: Fazer o diff dos dois documentos
+			}
+		}
+	}
 
 }
