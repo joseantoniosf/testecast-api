@@ -3,6 +3,8 @@ package com.example.testecast.api.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="documento_right")
@@ -11,6 +13,8 @@ public class DocumentoRight {
 	@Id
 	private Long codigo;
 	
+	@NotNull
+	@Size(min=1, max=200)
 	private String documento;
 
 	public Long getCodigo() {

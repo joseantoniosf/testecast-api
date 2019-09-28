@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class DocumentoResource {
 	}
 
 	@PostMapping("{codigo}/left")
-	public ResponseEntity<DocumentoLeft> criar(@PathVariable Long codigo, @RequestBody DocumentoLeft docLeft, HttpServletResponse response) {
+	public ResponseEntity<DocumentoLeft> criar(@PathVariable Long codigo, @Valid @RequestBody DocumentoLeft docLeft, HttpServletResponse response) {
 		DocumentoLeft documentoLeft = new DocumentoLeft();
 		documentoLeft.setCodigo(codigo);
 		documentoLeft.setDocumento(docLeft.getDocumento());
