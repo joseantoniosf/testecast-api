@@ -21,6 +21,7 @@ import com.example.testecast.api.model.DocumentoLeft;
 import com.example.testecast.api.model.DocumentoRight;
 import com.example.testecast.api.repository.DocumentoLeftRepository;
 import com.example.testecast.api.repository.DocumentoRightRepository;
+import com.example.testecast.api.service.DocumentoService;
 
 @RestController
 @RequestMapping("/v1/diff")
@@ -32,33 +33,65 @@ public class DocumentoResource {
 	@Autowired
 	private DocumentoRightRepository documentoRightRepository;
 	
+	@Autowired
+	private DocumentoService documentoService;
+	
+	// --------------------------------------------------------------------------
+	// ----------DOCUMENTO LEFT -------------------------------------------------
+	// --------------------------------------------------------------------------
 	@GetMapping("/left")
 	public List<DocumentoLeft> listarLeft() {
 		return documentoLeftRepository.findAll();
 	}
-
-	@GetMapping("/right")
-	public List<DocumentoRight> listarRight() {
-		return documentoRightRepository.findAll();
+	
+	@GetMapping("/{codigo}/left")
+	public ResponseEntity<DocumentoLeft> buscarLeftPeloCodigo(@PathVariable Long codigo) {
+		Optional<DocumentoLeft> docLeft = documentoLeftRepository.findById(codigo);
+		return docLeft.isPresent() ?
+				ResponseEntity.ok(docLeft.get()) : ResponseEntity.notFound().build();
 	}
 
 	@PostMapping("{codigo}/left")
 	public ResponseEntity<DocumentoLeft> criar(@PathVariable Long codigo, @Valid @RequestBody DocumentoLeft docLeft, HttpServletResponse response) {
-		DocumentoLeft documentoLeft = new DocumentoLeft();
-		documentoLeft.setCodigo(codigo);
-		documentoLeft.setDocumento(docLeft.getDocumento());
-		
-		DocumentoLeft docLeftSalvo = documentoLeftRepository.save(documentoLeft);
+		DocumentoLeft docLeftSalvo = documentoService.salvar(codigo, docLeft);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().build().toUri();
 		
 		return ResponseEntity.created(uri).body(docLeftSalvo);
 	}
 	
-	@GetMapping("/{codigo}/left")
-	public ResponseEntity<DocumentoLeft> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<DocumentoLeft> docLeft = documentoLeftRepository.findById(codigo);
-		return docLeft.isPresent() ?
-				ResponseEntity.ok(docLeft.get()) : ResponseEntity.notFound().build();
+	
+	// --------------------------------------------------------------------------
+	// ----------DOCUMENTO RIGHT ------------------------------------------------
+	// --------------------------------------------------------------------------
+	@GetMapping("/right")
+	public List<DocumentoRight> listarRight() {
+		return documentoRightRepository.findAll();
 	}
+	
+	@GetMapping("/{codigo}/right")
+	public ResponseEntity<DocumentoRight> buscarRightPeloCodigo(@PathVariable Long codigo) {
+		Optional<DocumentoRight> docRight = documentoRightRepository.findById(codigo);
+		return docRight.isPresent() ?
+				ResponseEntity.ok(docRight.get()) : ResponseEntity.notFound().build();
+	}
+
+	@PostMapping("{codigo}/right")
+	public ResponseEntity<DocumentoRight> criar(@PathVariable Long codigo, @Valid @RequestBody DocumentoRight docRight, HttpServletResponse response) {
+		DocumentoRight docRightSalvo = documentoService.salvar(codigo, docRight);
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().build().toUri();
+		
+		return ResponseEntity.created(uri).body(docRightSalvo);
+	}
+	
+	
+	// --------------------------------------------------------------------------
+	// ----------RESULTADO DA DIFERENÇA ENTRE LEFT E RIGHT ----------------------
+	// --------------------------------------------------------------------------
+	@GetMapping("/{codigo}")
+	public String diffEntreLeftERight(@PathVariable Long codigo) {
+		return "Documentos " + codigo.toString() + " idênticos";
+	}
+
 }
