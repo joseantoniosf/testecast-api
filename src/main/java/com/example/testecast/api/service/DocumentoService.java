@@ -34,8 +34,12 @@ public class DocumentoService {
 	}
 	
 	public String resultadoDiffLeftRight(Long codigo) {
-		DocumentoLeft  docLeft  = documentoLeftRepository.findById(codigo).orElse(new DocumentoLeft());
-		DocumentoRight docRight = documentoRightRepository.findById(codigo).orElse(new DocumentoRight());
+		DocumentoLeft  docLeft  = documentoLeftRepository.findById(codigo).orElse(null);
+		DocumentoRight docRight = documentoRightRepository.findById(codigo).orElse(null);
+		
+		if (docLeft==null || docRight==null) {
+			return null;
+		}
 		
 		if (docLeft.equals(docRight)) {
 			return "Documentos " + docLeft.getCodigo() + " idênticos";
@@ -45,9 +49,31 @@ public class DocumentoService {
 				return "Documentos " + docLeft.getCodigo() + " com tamanhos diferentes";
 			}
 			else {
-				return "Falta fazer o Diff dos dois documentos";//TODO: Fazer o diff dos dois documentos
+				return String.valueOf( compareDuasStrings(docLeft.getDocumento(), docRight.getDocumento()) );
 			}
 		}
+	}
+	
+	/**
+	 * Compara duas Strings caracter por caracter.
+	 * No conexto desta API, as validações anteriores não permitem que elas sejam nulas
+	 * Seus tamanhos são iguais, então tanto faz por qual começar a comparar
+	 * 
+	 * @param s1
+	 * @param s2
+	 * @return -1 se forem iguais; Qualquer outro número será a posição em que são diferentes
+	 */
+	private int compareDuasStrings(String s1, String s2) {
+		int pos = -1;
+		
+		for (int i=0; i < s1.length(); i++) {
+			if (s1.charAt(i) != s2.charAt(i)) {
+				pos = i +1;
+				break;
+			}
+		}
+		
+		return pos;
 	}
 
 }

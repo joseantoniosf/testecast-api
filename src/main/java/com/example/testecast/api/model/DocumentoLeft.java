@@ -14,7 +14,7 @@ public class DocumentoLeft {
 	private Long codigo;
 	
 	@NotNull
-	@Size(min=5, max=200)
+	@Size(min=5, max=2000000)
 	private String documento;
 
 	public Long getCodigo() {

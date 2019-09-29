@@ -90,8 +90,10 @@ public class DocumentoResource {
 	// ----------RESULTADO DA DIFERENÇA ENTRE LEFT E RIGHT ----------------------
 	// --------------------------------------------------------------------------
 	@GetMapping("/{codigo}")
-	public String diffEntreLeftERight(@PathVariable Long codigo) {
-		return documentoService.resultadoDiffLeftRight(codigo);
+	public ResponseEntity<String> diffEntreLeftERight(@PathVariable Long codigo) {
+		String texto = documentoService.resultadoDiffLeftRight(codigo);
+		return texto != null ?
+				ResponseEntity.ok(texto) : ResponseEntity.notFound().build();
 	}
 
 }
