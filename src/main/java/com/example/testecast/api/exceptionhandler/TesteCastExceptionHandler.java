@@ -54,7 +54,7 @@ public class TesteCastExceptionHandler extends ResponseEntityExceptionHandler {
 		return erros;
 	}
 	
-	public class Erro {
+	public static class Erro {
 		
 		private String mensagemUsuario;
 		private String mensagemDesenvolvedor;
