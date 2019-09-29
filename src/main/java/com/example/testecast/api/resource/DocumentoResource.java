@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.testecast.api.model.DocumentoLeft;
 import com.example.testecast.api.model.DocumentoRight;
+import com.example.testecast.api.model.RespostaDiff;
 import com.example.testecast.api.repository.DocumentoLeftRepository;
 import com.example.testecast.api.repository.DocumentoRightRepository;
 import com.example.testecast.api.service.DocumentoService;
@@ -90,10 +91,10 @@ public class DocumentoResource {
 	// ----------RESULTADO DA DIFERENÇA ENTRE LEFT E RIGHT ----------------------
 	// --------------------------------------------------------------------------
 	@GetMapping("/{codigo}")
-	public ResponseEntity<String> diffEntreLeftERight(@PathVariable Long codigo) {
+	public ResponseEntity<RespostaDiff> diffEntreLeftERight(@PathVariable Long codigo) {
 		String texto = documentoService.resultadoDiffLeftRight(codigo);
 		return texto != null ?
-				ResponseEntity.ok(texto) : ResponseEntity.notFound().build();
+				ResponseEntity.ok(new RespostaDiff(texto)) : ResponseEntity.notFound().build();
 	}
 
 }
