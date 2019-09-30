@@ -157,4 +157,32 @@ public class DocumentoResourceTest {
 			.andExpect(status().isBadRequest());
 	}
 
+	
+	// --------------------------------------------------------------------------
+	// ----------RESULTADO DA DIFERENÇA ENTRE LEFT E RIGHT ----------------------
+	// --------------------------------------------------------------------------
+	@Test
+	public void testaRequisicaoDiffSucesso1() throws Exception {
+		String url = "/v1/diff/1";
+		this.mvc.perform(get(url))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("idênticos")));
+	}
+	
+	@Test
+	public void testaRequisicaoDiffSucesso2() throws Exception {
+		String url = "/v1/diff/2";
+		this.mvc.perform(get(url))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("tamanhos diferentes")));
+	}
+
+	@Test
+	public void testaRequisicaoDiffSucesso3() throws Exception {
+		String url = "/v1/diff/3";
+		this.mvc.perform(get(url))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("resposta")));
+	}
+
 }
